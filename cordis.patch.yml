@@ -1,0 +1,6 @@
+# dsh bundle patch: 把本插件插入 profile 的插件层栈。
+# 通过官方 CLI 安装时会自动生效：
+#   dsh plugin --profile web add dsh-update-notifier
+- insert:
+    - id: dsh-update-notifier
+      name: 'dsh-update-notifier'

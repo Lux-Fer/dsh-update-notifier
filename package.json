@@ -1,0 +1,55 @@
+{
+  "name": "dsh-update-notifier",
+  "version": "1.0.0",
+  "description": "DSH 启动更新提醒插件：每次打开 dsh 检查新版本并弹窗，支持一键升级与「今日不再提示」。 · Startup update notifier for DeepSeek Harness with one-click upgrade and per-day snooze.",
+  "type": "module",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "keywords": [
+    "deepseek",
+    "harness",
+    "dsh",
+    "dsh-plugin",
+    "update",
+    "notifier",
+    "upgrade"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lux-Fer/dsh-update-notifier.git"
+  },
+  "homepage": "https://github.com/Lux-Fer/dsh-update-notifier#readme",
+  "bugs": {
+    "url": "https://github.com/Lux-Fer/dsh-update-notifier/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": "./client/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "client",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-renderer"
+      ],
+      "platform": "web"
+    }
+  }
+}
