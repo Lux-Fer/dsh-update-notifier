@@ -119,6 +119,35 @@ window.__ModuleLoader__.load({
 });
 ```
 
+## 兼容性
+
+插件自 **1.0.1** 起声明宿主契约，安装时 dsh 的插件管理器会据此校验（此前未声明，等于放弃被守卫保护）：
+
+```json
+"engines": { "dsh": "^0.1.5-rc.1 || ^0.2.0-rc.1" },
+"peerDependencies": {
+  "@deepseek-ai/dsh-host-webserver": "^0.1.5-rc.1 || ^0.2.0-rc.1"
+}
+```
+
+| dsh 版本 | 状态 | 验证方式 |
+|---|---|---|
+| **0.2.0-rc.2** | ✅ 已验证 | 换端口冒烟启动，接口返回 `{"installed":"0.2.0-rc.2","channel":"next"}` |
+| 0.1.7-rc.2 | ✅ 已验证 | 接口返回 200 并正确报告更新状态 |
+| 0.1.5-rc.3 | ✅ 已验证 | 安装生效，弹窗完成过一次真实升级 |
+
+用到的 dsh 接口在 0.1.x 与 0.2.0 之间的对照（逐项按 0.2.0-rc.2 核对）：
+
+| 能力 | 0.2.0 现状 |
+|---|---|
+| `window.__ModuleLoader__.load({ id, factory })` | 未变，与官方客户端插件同构 |
+| `ctx.slots.inject("shell.overlay", …)` | 插槽仍在（0.2.0 的插件管理器同样注册到它） |
+| `exports.inject = ["slots"]` | 仍是标准写法 |
+| `host.webServer.register({ kind: "exact", path, handler })` | 签名未变 |
+| `ctx.inject(["webServer"], …)` + `host.effect(…)` | 未变 |
+
+> 0.1.x 与 0.2.0 的破坏性变化集中在**插件之间的相互要求**（例如 `dsh-better-sidebar@0.24.1` 要求 `^0.2.0-rc.1`），本插件用到的接口在两个大版本上没有变化。
+
 ## 安全
 
 升级接口能在你机器上执行 `npm install -g`，因此做了三重限制：
